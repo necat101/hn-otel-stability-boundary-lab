@@ -7,7 +7,7 @@ python3 -m py_compile "$ROOT/tests/test_stability_boundary.py" && echo "py_compi
 echo "Running evaluator..."
 python3 "$ROOT/evaluator.py"
 echo "Running tests..."
-python3 -m unittest tests.test_stability_boundary -v
+(cd "$ROOT" && python3 -m unittest tests.test_stability_boundary -v)
 echo "Deterministic re-run check..."
 python3 "$ROOT/evaluator.py"
 echo "Diff generated outputs vs tracked..."

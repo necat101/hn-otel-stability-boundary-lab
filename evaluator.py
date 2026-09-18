@@ -167,7 +167,8 @@ def main():
     for r in results:
         lines.append(f"- **{r['id']}**: component_type={r['component_type']}, stability={r['stability_level']}, compat={r['compatibility_guarantee']}, semconv={r['semantic_convention_stability']}, instr={r['instrumentation_mode']} (required={r['instrumentation_is_required']}), backend_std={r['backend_behavior_standardized']}")
     lines.append("")
-    RESULTS_MD.write_text("\n".join(lines) + "\n")
+    # normalize: exactly one trailing newline
+    RESULTS_MD.write_text("\n".join(lines).rstrip("\n") + "\n")
     print(f"Wrote {RESULTS_JSON} and {RESULTS_MD} ({len(results)} cases)")
 
 
