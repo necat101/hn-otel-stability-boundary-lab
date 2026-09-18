@@ -29,7 +29,7 @@ Rule: **stable API ≠ stable SDK ≠ stable semconv ≠ contrib stability ≠ i
 
 - **Stability per signal component:** Development → Stable (→ Deprecated → Removed). A signal MAY become stable component-by-component in order API → Semantic Conventions → API Contrib → SDK → SDK Contrib. API MUST become stable before other components. Once Stable, rules apply until end of existence. ([same doc § Signal lifecycle / Stable](https://opentelemetry.io/docs/specs/otel/versioning-and-stability/))
 
-- **Semantic conventions separately and mixed:** SemConv has its own version and schema; semconv documents may be `Mixed` status. A Stable group (e.g., `telemetry.sdk` Stable, `http` stable group) does not make a referenced Development OptIn attribute stable. GenAI `gen_ai.*` conventions as of `v1.42.0` moved to a dedicated repo and remain Development (renames expected). ([betterstack semconv guide](https://betterstack.com/community/guides/observability/opentelemetry-semantic-conventions/), [uptrace semconv](https://uptrace.dev/opentelemetry/semconv), [resource semconv](https://opentelemetry.io/docs/specs/semconv/resource/))
+- **Semantic conventions separately and mixed:** SemConv has its own version and schema; semconv group/type documents carry independent stability (e.g., `resource` document is `Mixed`; groups like `telemetry.sdk`, `telemetry.distro`, `service` each carry `Stable` while sibling groups may be `Development`). Per `versioning-and-stability.md` § Semantic Conventions Stability and the registry `Attribute Requirement Levels` (opt-in), a Stable group referencing a Development OptIn attribute does NOT make that attribute Stable — Development opt-in attributes require `OTEL_SEMCONV_STABILITY_OPT_IN` and remain Development. ([versioning-and-stability.md § Semantic Conventions Stability](https://opentelemetry.io/docs/specs/otel/versioning-and-stability/), [resource semconv — Mixed document, Stable groups](https://opentelemetry.io/docs/specs/semconv/resource/), [attribute-requirement-level — opt-in Development](https://opentelemetry.io/docs/specs/semconv/general/attribute-requirement-level/))
 
 - **Contrib ≠ Core:** Contrib packages SHOULD stay compatible with latest API/SDK/SemConv; public portions SHOULD remain backward compatible, but MAY break when required downstream dependency breaks — with recommendation to ship new package rather than break existing. Weaker guarantee than API/SDK MUST. Same source § Contrib Stability.
 
@@ -42,11 +42,12 @@ Rule: **stable API ≠ stable SDK ≠ stable semconv ≠ contrib stability ≠ i
 Quoted text is abbreviated; IDs and authors are exact so you can re-fetch `https://hacker-news.firebaseio.com/v0/item/<id>.json`.
 
 | # | Proposition seen on thread | Source | Assessment |
-|---|---|---|---|
+|---|---|---|
 | 1 | “The SDKs have terrible performance overhead for instrumentation and are … highly resistant to integrating the output of better performing (or just preexisting) instrumentation. In Python and Ruby … CPU cost of all the mandatory abstraction is way too high.” | **kalkin · 49400018** | **SDKs are the problem, not necessarily the spec.** Consistent with boundary `Stable API ≠ Stable SDK` and independent versioning — SDK behavior/complexity is separable from spec stability. Fixture `development_no_guarantee` / `stable_api_compatibility` tests this separation. |
 | 2 | “What I find confusing about this is that otel is two things. 1. A spec 2. A ref implementation … if there's complaints about (2), that should trigger an ecosystem of alternative implementations that are guaranteed to be compatible because of (1).” | **growse · 49431601** | **OTel is both spec and implementation ecosystem.** Matches docs: “OpenTelemetry clients … do NOT refer to the specification or the Collector” vs OTEPS 0143 that clients follow spec versioning. Compatibility is not uniform via one global version. |
 | 3 | “I like the end result of … tracing …, but the SDKs have been a nightmare. Too much emphasis on automatic instrumentation, Java-isms, everything is stateful and abstracted away.” | **osener · 49397084** | **Automatic instrumentation adds unwanted complexity (per comment).** Automatic is one instrumentation mechanism, not a requirement; manual remains valid (fixtures `manual_instrumentation_valid`, `automatic_instrumentation_mechanism`). |
-| 4 | “What always puzzles me … is that tracing, metrics and logs are all designed independently. I wish … just annotate my code base once, and let the ultimate decision … be dynamic at runtime.” + reply “How would you represent metrics as traces? You cannot … metrics are something else …” | **EdSchouten · 49396130** (prompt) + **fuzzy2 · 49397362** (rebuttal) | **Traces, metrics, logs have intentionally distinct data models.** Distinct signals MAY stabilize independently; API MUST go stable first. Thread debate does not collapse them into one data model. |
+| 4 | “What always puzzles me … is that tracing, metrics and logs are all designed independently. I wish … just annotate my code base once, and let the ultimate decision … be dynamic at runtime.” | **EdSchouten · 49396130** | **Tracing vs metrics vs logs are distinct signals by design.** Per spec, signals MAY stabilize component-by-component and API MUST go stable first — distinct data models are intentional, not a single collapsible model. Fixture coverage: `mixed_semconv_stability` / signal lifecycle note. |
+| 5 | “How would you represent metrics as traces? You cannot … metrics are something else. Of course it would be magic in theory to have it all in one.” | **fuzzy2 · 49397362** | **Metrics are not traces — distinct data models with distinct stability.** Rebuttal reinforces that collapsing signals into one model is not viable; each signal’s stability progresses independently. Consistent with `Stable API ≠ Stable SDK ≠ Stable semconv` and mixed document stability. |
 
 If a comment you need is missing, fetch it directly — these are not invented. `python3 -c "import urllib.request,json;print(json.load(urllib.request.urlopen('https://hacker-news.firebaseio.com/v0/item/49400018.json')))"`
 
@@ -103,7 +104,7 @@ Independent oracle — re-derives expected classifications from raw component/st
 - importing an overall compliant/production-safe verdict
 
 ```
-python3 -m unittest tests/test_stability_boundary.py -v
+python3 -m unittest tests.test_stability_boundary.py -v
 ```
 
 ### Verification
@@ -120,7 +121,7 @@ cat VERIFY.md          # public HTTPS fresh-clone transcript (see VERIFY.md proc
 git clone https://github.com/necat101/hn-otel-stability-boundary-lab.git
 cd hn-otel-stability-boundary-lab
 python3 evaluator.py
-python3 -m unittest tests/test_stability_boundary.py -v
+python3 -m unittest tests.test_stability_boundary.py -v
 ./verify.sh
 ```
 
@@ -130,8 +131,7 @@ python3 -m unittest tests/test_stability_boundary.py -v
 - `https://opentelemetry.io/docs/specs/otel/versioning-and-stability/` (fetched 2026-09-18; Stable status; defines API/SDK/Contrib/SemConv stability + Version numbers)
 - `https://github.com/open-telemetry/oteps/blob/main/text/0143-versioning-and-stability.md` (OTEPS 0143, same content family)
 - `https://opentelemetry.io/docs/specs/semconv/resource/` (Mixed resource doc; telemetry.sdk Stable)
-- `https://betterstack.com/community/guides/observability/opentelemetry-semantic-conventions/` (OTEL_SEMCONV_STABILITY_OPT_IN, http/dup)
-- `https://uptrace.dev/opentelemetry/semconv` (mixed semconv renames, Development gen_ai split)
+- `https://opentelemetry.io/docs/specs/semconv/general/attribute-requirement-level/` (Requirement Levels — `Recommended` vs `OptIn` Development; stable-group does not confer to opt-in Development attributes)
 - No collectors, telemetry backends, containers, network traces, SDK installs, or benchmarks were used; all evidence is synthetic and deterministic.
 
 ## Result snapshot (actual, 2026-09-18)

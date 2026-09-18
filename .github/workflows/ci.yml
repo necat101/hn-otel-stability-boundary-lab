@@ -17,4 +17,4 @@ jobs:
       - run: cat results.json
       - run: cat RESULTS.md
       - run: python3 -m unittest tests.test_stability_boundary -v
-      - run: ./verify.sh
+      - run: bash verify.sh
