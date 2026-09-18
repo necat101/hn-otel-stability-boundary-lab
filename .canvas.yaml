@@ -1,0 +1,9 @@
+version: 3
+project: hn-otel-stability-boundary-lab
+targets:
+  hn-otel-stability-boundary-lab:
+    enabled: true
+    title: "OTel Stability Boundary"
+    path: "hn-otel-stability-boundary-lab"
+    runner: python
+    output: "results.json"
