@@ -1,0 +1,343 @@
+[
+  {
+    "id": "stable_api_compatibility",
+    "title": "Stable API \u2014 compatibility guarantee holds across minor versions",
+    "component": {
+      "component_type": "api",
+      "language": "python",
+      "package": "opentelemetry-api",
+      "version": "1.24.0",
+      "spec_version_implemented": "1.32.0"
+    },
+    "stability": {
+      "level": "Stable",
+      "signal": "trace"
+    },
+    "versioning": {
+      "api_version": "1.24.0",
+      "sdk_version": null,
+      "semconv_version": null,
+      "contrib_version": null
+    },
+    "semantic_convention": null,
+    "instrumentation": {
+      "mode": "manual",
+      "is_required": false
+    },
+    "backend": {
+      "behavior": "ui_rendering",
+      "standardized_by_client_spec": false
+    },
+    "hn_claim_ref": null
+  },
+  {
+    "id": "development_no_guarantee",
+    "title": "Development signal \u2014 no Stable guarantee",
+    "component": {
+      "component_type": "sdk",
+      "language": "python",
+      "package": "opentelemetry-sdk",
+      "version": "1.24.0",
+      "spec_version_implemented": "1.32.0"
+    },
+    "stability": {
+      "level": "Development",
+      "signal": "profiling"
+    },
+    "versioning": {
+      "api_version": null,
+      "sdk_version": null,
+      "semconv_version": null,
+      "contrib_version": null
+    },
+    "semantic_convention": null,
+    "instrumentation": {
+      "mode": "manual",
+      "is_required": false
+    },
+    "backend": {
+      "behavior": null,
+      "standardized_by_client_spec": false
+    },
+    "hn_claim_ref": null
+  },
+  {
+    "id": "api_sdk_different_versions",
+    "title": "API and SDK have independent version numbers in same language",
+    "component": {
+      "component_type": "api+sdk",
+      "language": "python",
+      "package": "opentelemetry-python",
+      "version": null,
+      "spec_version_implemented": "1.32.0"
+    },
+    "stability": {
+      "level": "Stable",
+      "signal": "trace"
+    },
+    "versioning": {
+      "api_version": "1.24.0",
+      "sdk_version": "1.31.0",
+      "semconv_version": "1.27.0",
+      "contrib_version": null
+    },
+    "semantic_convention": null,
+    "instrumentation": {
+      "mode": "manual",
+      "is_required": false
+    },
+    "backend": {
+      "behavior": null,
+      "standardized_by_client_spec": false
+    },
+    "hn_claim_ref": null
+  },
+  {
+    "id": "different_languages_different_versions",
+    "title": "Different language implementations at different version numbers",
+    "component": {
+      "component_type": "api",
+      "language": "multi",
+      "package": "opentelemetry-api",
+      "version": null,
+      "spec_version_implemented": "1.32.0"
+    },
+    "stability": {
+      "level": "Stable",
+      "signal": "trace"
+    },
+    "versioning": {
+      "api_version": null,
+      "sdk_version": null,
+      "semconv_version": null,
+      "contrib_version": null,
+      "language_versions": {
+        "python_api": "1.24.0",
+        "java_api": "1.32.1"
+      }
+    },
+    "semantic_convention": null,
+    "instrumentation": {
+      "mode": "manual",
+      "is_required": false
+    },
+    "backend": {
+      "behavior": null,
+      "standardized_by_client_spec": false
+    },
+    "hn_claim_ref": null
+  },
+  {
+    "id": "stable_group_unstable_attribute",
+    "title": "Stable convention group referencing an unstable opt-in attribute",
+    "component": {
+      "component_type": "semantic_conventions",
+      "language": null,
+      "package": "semantic-conventions",
+      "version": "1.27.0",
+      "spec_version_implemented": null
+    },
+    "stability": {
+      "level": "Mixed",
+      "signal": "http"
+    },
+    "versioning": {
+      "api_version": null,
+      "sdk_version": null,
+      "semconv_version": "1.27.0",
+      "contrib_version": null
+    },
+    "semantic_convention": {
+      "group": "http",
+      "group_stability": "Stable",
+      "attribute": "http.request.resend_count",
+      "attribute_stability": "Development",
+      "attribute_requirement_level": "OptIn",
+      "referenced_in_group": true
+    },
+    "instrumentation": {
+      "mode": "manual",
+      "is_required": false
+    },
+    "backend": {
+      "behavior": null,
+      "standardized_by_client_spec": false
+    },
+    "hn_claim_ref": null
+  },
+  {
+    "id": "contrib_vs_core",
+    "title": "Contrib package versus Core specification component",
+    "component": {
+      "component_type": "contrib",
+      "language": "python",
+      "package": "opentelemetry-instrumentation-flask",
+      "version": "0.50b1",
+      "spec_version_implemented": null
+    },
+    "stability": {
+      "level": "Development",
+      "signal": "http"
+    },
+    "versioning": {
+      "api_version": "1.24.0",
+      "sdk_version": "1.31.0",
+      "semconv_version": "1.27.0",
+      "contrib_version": "0.50b1"
+    },
+    "semantic_convention": null,
+    "instrumentation": {
+      "mode": "automatic",
+      "is_required": false
+    },
+    "backend": {
+      "behavior": null,
+      "standardized_by_client_spec": false
+    },
+    "hn_claim_ref": null,
+    "core_counterpart": {
+      "component_type": "api",
+      "version": "1.24.0",
+      "stability": "Stable"
+    }
+  },
+  {
+    "id": "manual_instrumentation_valid",
+    "title": "Manual instrumentation remains valid",
+    "component": {
+      "component_type": "api",
+      "language": "python",
+      "package": "opentelemetry-api",
+      "version": "1.24.0",
+      "spec_version_implemented": "1.32.0"
+    },
+    "stability": {
+      "level": "Stable",
+      "signal": "trace"
+    },
+    "versioning": {
+      "api_version": "1.24.0",
+      "sdk_version": "1.31.0",
+      "semconv_version": null,
+      "contrib_version": null
+    },
+    "semantic_convention": null,
+    "instrumentation": {
+      "mode": "manual",
+      "is_required": false
+    },
+    "backend": {
+      "behavior": null,
+      "standardized_by_client_spec": false
+    },
+    "hn_claim_ref": null
+  },
+  {
+    "id": "automatic_instrumentation_mechanism",
+    "title": "Automatic instrumentation is one mechanism not a requirement",
+    "component": {
+      "component_type": "contrib",
+      "language": "java",
+      "package": "opentelemetry-javaagent",
+      "version": "2.7.0",
+      "spec_version_implemented": null
+    },
+    "stability": {
+      "level": "Stable",
+      "signal": "trace"
+    },
+    "versioning": {
+      "api_version": "1.32.1",
+      "sdk_version": "1.32.1",
+      "semconv_version": null,
+      "contrib_version": "2.7.0"
+    },
+    "semantic_convention": null,
+    "instrumentation": {
+      "mode": "automatic",
+      "is_required": false
+    },
+    "backend": {
+      "behavior": null,
+      "standardized_by_client_spec": false
+    },
+    "hn_claim_ref": null
+  },
+  {
+    "id": "backend_behavior_separate",
+    "title": "Backend/UI rendering is separate implementation behavior",
+    "component": {
+      "component_type": "api",
+      "language": "python",
+      "package": "opentelemetry-api",
+      "version": "1.24.0",
+      "spec_version_implemented": "1.32.0"
+    },
+    "stability": {
+      "level": "Stable",
+      "signal": "trace"
+    },
+    "versioning": {
+      "api_version": "1.24.0",
+      "sdk_version": "1.31.0",
+      "semconv_version": null,
+      "contrib_version": null
+    },
+    "semantic_convention": null,
+    "instrumentation": {
+      "mode": "manual",
+      "is_required": false
+    },
+    "backend": {
+      "behavior": "trace_ui_sampling_display",
+      "standardized_by_client_spec": false,
+      "note": "Client spec compatibility does not standardize backend UI rendering or sampling display"
+    },
+    "hn_claim_ref": null
+  },
+  {
+    "id": "mixed_semconv_stability",
+    "title": "Semantic conventions can contain mixed stability levels",
+    "component": {
+      "component_type": "semantic_conventions",
+      "language": null,
+      "package": "semantic-conventions",
+      "version": "1.27.0",
+      "spec_version_implemented": null
+    },
+    "stability": {
+      "level": "Mixed",
+      "signal": "resource+http"
+    },
+    "versioning": {
+      "api_version": null,
+      "sdk_version": null,
+      "semconv_version": "1.27.0",
+      "contrib_version": null
+    },
+    "semantic_convention": {
+      "group": "resource",
+      "group_stability": "Mixed",
+      "attributes": [
+        {
+          "key": "service.name",
+          "stability": "Stable"
+        },
+        {
+          "key": "k8s.pod.uid",
+          "stability": "Development"
+        }
+      ],
+      "mixed": true
+    },
+    "instrumentation": {
+      "mode": null,
+      "is_required": false
+    },
+    "backend": {
+      "behavior": null,
+      "standardized_by_client_spec": false
+    },
+    "hn_claim_ref": null
+  }
+]
